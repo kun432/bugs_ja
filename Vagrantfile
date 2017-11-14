@@ -68,4 +68,13 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+  config.vm.provision "shell", inline: <<-SHELL
+    yum update -y
+    yum install -y "@development" epel-release 
+    yum install -y httpd php php-mbstring mysql-server php-mysql php-pdo php-mcrypt
+    chkconfig mysqld on
+    chkconfig httpd on
+    service mysqld status || service mysqld start
+    service httpd status || service httpd start
+  SHELL
 end
